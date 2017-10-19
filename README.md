@@ -1,4 +1,4 @@
-BigDebug/BigSift Google Cloud Deployment for CS239
+# BigDebug/BigSift Google Cloud Deployment for CS239
 
 ### Step 1:
 Create a Google cloud account [here](https://cloud.google.com/)
