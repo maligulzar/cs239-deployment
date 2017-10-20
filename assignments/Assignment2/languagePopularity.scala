@@ -8,10 +8,11 @@ val text = jsonrdd.map(row =>
         List(row.getAs("title").toString,row.getAs("body").toString,row.getAs("tags").toString)
     )
 
-// take each string in the array and make it lowercase and split by spaces. flatMap combines all the words together for each array
+// take each string in the array and make it lowercase and split at everything except A-Za-z0-9 and '+'
+//flatMap combines all the words together for each array
 val words = text.map( txt => 
         txt.flatMap(strings =>
-            strings.toLowerCase.split(" ")
+            strings.toLowerCase.split("[^\\w+]+")
         )
     )
 
@@ -25,4 +26,4 @@ val filteredForLanguages = words.flatMap(wordArray => wordArray
 // basic word count
 val languageFreq = filteredForLanguages.map(word => (word,1)).reduceByKey(_+_)
 
-// res6: Array[(String, Int)] = Array((scala,1), (c++,19), (python,26), (java,37), (c,28))
+// results: Array[(String, Int)] = Array((c++,53), (python,41), (java,66), (c,221))
