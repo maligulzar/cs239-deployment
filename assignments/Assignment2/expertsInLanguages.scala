@@ -70,19 +70,44 @@ var answerLanguagesAndScores = joinedQuestionAnswer.map(row =>
     )
 
 // rdd[(String,         (List[(lang1,score),...,(langN,score)]))]
+//      user_id
 var userLanguagesAndScores = answerLanguagesAndScores.map(row =>
         (
             row._1,
             row._2._1.map(lang => (lang, row._2._2))  
         )
     )
-
-var f = userLanguagesAndScores.reduceByKey( (l1,l2) => 
-        (l1++l2).groupBy(_._1).toList.map{
+// .reduceByKey to combine lists of (lang,score) tuples for each user
+// (l1++l2) concatenates the lists of (lang,score) tuples 
+// .groupBy will group tuples by the first element (lang) and return a map
+//      of key = lang and value = list of tuples (lang,score)
+// .map returns another map. the key is the same, but the value is the sum 
+//      of the second element (score) of the tuples
+//      kv.map(_._2).sum will take the score of each tuple and sum them
+// .toList changes map back to list of (lang,score) tuples 
+var userScoresAcc = userLanguagesAndScores.reduceByKey( (l1,l2) => 
+        (l1++l2).groupBy(_._1).map {
             case (key, kv) => (key, kv.map(_._2).sum)
-        }
+        }.toList
     )
 
+var languageUsersAndScores = userScoresAcc.flatMap {
+        case (user, langScoreList) => langScoreList.map {
+            case (lang,score) => (lang, (user,score))
+        }
+    }
+
+
+// groupBy will group (lang, (user,score)) tuples by lang and return a map of
+//      key = lang, value = iterable of (lang,(user,score)) tuples
+var languageExperts = languageUsersAndScores.groupBy(_._1).map {
+        case (lang, tupleList) => (lang, tupleList.map(_._2).toList.sortBy(_._2).reverse)
+    }
+// (user1, [(lang1,score1),...,(langN,scoreN)] -> [ (lang1, (user1,score1)) , ...., (langN, (user1,scoreN)) ]
+//                                             -> [ (lang1, (user2,score1)) , ...., (langN, (user2,scoreN)) ]
+// lang1, [(user1,score), ...,(userN,score)]
+// ...
+// langN, [(user1,score), ...,(userN,score)]
 
 
 
