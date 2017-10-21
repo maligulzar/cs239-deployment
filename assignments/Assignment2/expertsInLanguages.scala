@@ -30,6 +30,7 @@ val questionsFiltered = questions.filter( row =>
 // use .toString otherwise get java.lang.ClassCastException: java.lang.String cannot be cast to scala.runtime.Nothing$
 // rdd[(String,         List[String])]
 //      question id     unique languages in the title/body/tags
+// key = question_id, value = [languages]
 val questionPairRdd = questionsFiltered.map(row => 
         (//tuple
             row.getAs("id").toString,
@@ -42,6 +43,7 @@ val questionPairRdd = questionsFiltered.map(row =>
 
 // rdd[(String,     List[String])]
 //      parent_id   owner_user_id, score
+// key = pareint_id, value = [owner_user_id,score]
 val answerPairRdd = answersFiltered.map(row => 
         (//tuple
             row.getAs("parent_id").toString,
@@ -51,11 +53,13 @@ val answerPairRdd = answersFiltered.map(row =>
 
 // rdd[(String,         (List[String],      List[String]))]
 //      question_id      languages          owner_user_id,score
+// join on question_id and parent_id to get key = question_id, value = ([languages],[owner_user_id,score])
 var joinedQuestionAnswer = questionPairRdd.join(answerPairRdd)
 
 // rdd[(String,         (List[String],  String)]
 //      owner_user_id   languages,      score
-var answerLanguagesAndScore = joinedQuestionAnswer.map(row =>  
+// extract revelant info: (owner_user_id, ([languages],score))
+var answerLanguagesAndScores = joinedQuestionAnswer.map(row =>  
         (
             row._2._2(0), 
             (
@@ -65,3 +69,10 @@ var answerLanguagesAndScore = joinedQuestionAnswer.map(row =>
         )
     )
 
+// rdd[(String,         (List[(lang1,score),...,(langN,score)]))]
+var userLanguagesAndScores = answerLanguagesAndScores.map(row =>
+        (
+            row._1,
+            row._2._1.map(lang => (lang, row._2._2))  
+        )
+    )
