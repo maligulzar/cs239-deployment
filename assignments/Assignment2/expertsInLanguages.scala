@@ -47,7 +47,7 @@ val questionPairRdd = questionsFiltered.map(row =>
 val answerPairRdd = answersFiltered.map(row => 
         (//tuple
             row.getAs("parent_id").toString,
-            List(row.getAs("owner_user_id").toString, row.getAs("score").toString)
+            List(row.getAs("owner_user_id").toString.toInt, row.getAs("score").toString.toInt)
         )
     )
 
@@ -76,3 +76,20 @@ var userLanguagesAndScores = answerLanguagesAndScores.map(row =>
             row._2._1.map(lang => (lang, row._2._2))  
         )
     )
+
+var f = userLanguagesAndScores.reduceByKey( (l1,l2) => 
+        (l1++l2).groupBy(_._1).toList.map{
+            case (key, kv) => (key, kv.map(_._2).sum)
+        }
+    )
+
+
+
+
+
+
+
+
+
+
+
