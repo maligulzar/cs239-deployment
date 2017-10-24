@@ -12,16 +12,27 @@ val taxiPairRdd = taxiFiltered.map( row =>
         (//key value pair
             row.getAs("taxi_id").toString,
             (row.getAs[String]("trip_total").toFloat, row.getAs[String]("trip_seconds").toInt)
-            // (row.getAs("trip_total").toString.toFloat, row.getAs("trip_seconds").toString.toInt)
         )
     )
 
-val taxiDollarPerMinute = taxiPairRdd.reduceByKey( (tripX, tripY) =>
+val idAndDollarsPerMinute = taxiPairRdd.reduceByKey( (tripX, tripY) =>
         (tripX._1 + tripY._1, tripX._2 + tripY._2)
-
     ).map{
-        case (taxi_id, (dollars, seconds)) => (taxi_id, dollars/(seconds.toDouble/60.0))
+        case (taxi_id, (dollars, seconds)) => 
+            seconds match {
+                case 0 => (taxi_id, 0.0)
+                case _ => (taxi_id, dollars/(seconds.toDouble/60.0))
+            }
     }
+    
+val dollarsPerMinute = idAndDollarsPerMinute.map( row => row._2)
+val numTaxis = dollarsPerMinute.count
 
-val meanDPM = taxiDollarPerMinute.map( row => row._2).collect.sum
+val mean = dollarsPerMinute.sum/numTaxis
+val devs = dollarsPerMinute.map( dpm => (dpm - mean) * (dpm - mean) )
+val std = Math.sqrt(devs.sum/ (numTaxis - 1))
+
+
+
+
 
