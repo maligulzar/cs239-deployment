@@ -39,13 +39,43 @@ val taxiPairRdd = taxiFiltered.map( row =>
             )
         )
     )
-
 val t1 = datetimeToTimestamp("2016/12/07 01:30:00")
 val t2 = datetimeToTimestamp("2016/12/07 03:30:00")
-val test = taxiPairRdd.filter( r => filterByAreaAndTime(r,8,t1,t2))
+val travelledThrough = List(8,8)
+val startIn = 8
+val endIn = 8
 
-// TODO: join all the tables of (taxi_id, unique_key) to find taxi_id that is in each table. after each join
-// reduce as well so we have (taxi_id, [list of unique_keys])
+val first = (taxiPairRdd.filter( filterByAreaAndTime(_, startIn, t1, t2))
+        .map( row => 
+            (
+                row._1, 
+                List(row._2._1)
+            ) 
+        ).reduceByKey(_++_)
+    )
+// create a rdd for each area in travelledThrough
+// new rdds consists of only (taxi_id, List(unique_key)) 
+// List of unique_keys because a taxi can make multiple trips that satisfy the constraints
+val rddForEachArea = travelledThrough.map( area => 
+        taxiPairRdd.filter( filterByAreaAndTime(_,area,t1,t2) )
+        .map( row => 
+            (row._1, List(row._2._1))
+        )
+        .reduceByKey(_++_)
+    )
+
+// join all the rdds on taxi_id
+// b.join(a) will give (taxi_id, (List(unique_keys), List(unique_keys)) )
+// .map in order to combine the two List(unique_keys) into one list
+val taxisInEachArea = rddForEachArea.foldLeft(first)( (b,a) => 
+        b.join(a)
+        .map( z => (z._1, (z._2._1 ++ z._2._2).toSet.toList))
+        // .reduceByKey(_++_.toSet.toList)
+    )
+
+
+
+
 
 // TODO: take (taxi_id, [list of unique_keys]) and get all those rides and sort by timestamps
 
