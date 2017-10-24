@@ -19,6 +19,9 @@ val taxiPairRdd = taxiFiltered.map( row =>
 val taxiDollarPerMinute = taxiPairRdd.reduceByKey( (tripX, tripY) =>
         (tripX._1 + tripY._1, tripX._2 + tripY._2)
 
-    )
+    ).map{
+        case (taxi_id, (dollars, seconds)) => (taxi_id, dollars/(seconds.toDouble/60.0))
+    }
 
+val meanDPM = taxiDollarPerMinute.map( row => row._2).collect.sum
 
