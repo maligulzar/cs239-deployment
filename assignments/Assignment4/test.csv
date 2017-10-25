@@ -1,4 +1,0 @@
-state_code,county_code,site_num,parameter_code,poc,latitude,longitude,datum,parameter_name,date_local,time_local,date_gmt,time_gmt,sample_measurement,units_of_measure,mdl,uncertainty,qualifier,method_type,method_code,method_name,state_name,county_name,date_of_last_change
-35,029,0003,81102,1,37.773972,-122.43128,WGS84,PM10 Total 0-10um STP,2013-05-11,16:00,2013-05-11,23:00,14,Micrograms/cubic meter (25 C),-50,,"",FEM,79,INSTRUMENTAL-R&P SA246B-INLET - TEOM-GRAVIMETRIC,New Mexico,Luna,2013-09-26
-32,003,0073,81102,1,36.173416,-115.332714,WGS84,PM10 Total 0-10um STP,2010-03-03,19:00,2010-03-04,03:00,3,Micrograms/cubic meter (25 C),4,,"",FEM,150,T A Series FH 62 C14 Continuous - Beta Attenuation,Nevada,Clark,2010-05-03
-35,013,0016,81102,2,32.003712,-106.599715,WGS84,PM10 Total 0-10um STP,2013-10-29,06:00,2013-10-29,13:00,43,Micrograms/cubic meter (25 C),-50,,"",FEM,79,INSTRUMENTAL-R&P SA246B-INLET - TEOM-GRAVIMETRIC,New Mexico,Dona Ana,2014-03-11
