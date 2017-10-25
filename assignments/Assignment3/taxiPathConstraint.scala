@@ -46,38 +46,71 @@ val startIn = 8
 val endIn = 8
 
 val first = (taxiPairRdd.filter( filterByAreaAndTime(_, startIn, t1, t2))
-        .map( row => 
-            (
-                row._1, 
-                List(row._2._1)
-            ) 
-        ).reduceByKey(_++_)
+        .map{
+            case (taxiId, (uniqueKey, pickupTime, dropoffTime, pickupArea, dropoffArea)) =>
+                (
+                    taxiId,
+                    List( 
+                        (uniqueKey, (pickupArea, pickupTime), (dropoffArea, dropoffTime) )
+                    )
+                )
+        }
+        .reduceByKey(_++_)
     )
+
 // create a rdd for each area in travelledThrough
-// new rdds consists of only (taxi_id, List(unique_key)) 
-// List of unique_keys because a taxi can make multiple trips that satisfy the constraints
+// .filter keeps rows that satisfy constraints
+// .map keeps only (taxi_id, List( (unique_key, (pickupArea,pickupTime),(dropoffArea,dropoffTime))  ))
+// .reduceByKey will concatenate the lists of unique_keys if a taxi made 
+//      multiple trips that satisifed constraints
 val rddForEachArea = travelledThrough.map( area => 
         taxiPairRdd.filter( filterByAreaAndTime(_,area,t1,t2) )
-        .map( row => 
-            (row._1, List(row._2._1))
-        )
+        .map{
+            case (taxiId, (uniqueKey, pickupTime, dropoffTime, pickupArea, dropoffArea)) =>
+                (
+                    taxiId,
+                    List( 
+                        (uniqueKey, (pickupArea, pickupTime), (dropoffArea, dropoffTime) )
+                    )
+                )
+        }
         .reduceByKey(_++_)
     )
 
 // join all the rdds on taxi_id
-// b.join(a) will give (taxi_id, (List(unique_keys), List(unique_keys)) )
-// .map in order to combine the two List(unique_keys) into one list
-val taxisInEachArea = rddForEachArea.foldLeft(first)( (b,a) => 
+// b.join(a) will give (taxi_id, (List( (unique_keys,...) ), List( (unique_keys,...)) ) 
+// .map in order to combine the two Lists into one list
+// .toSet.toList will get rid of duplicate tuples which can happen if
+//      a trip satisfied constraints for multiple areas
+// List[RDD[(String, List[(String, (Int, Long), (Int, Long))])]]
+//   -> RDD[(String, List[(String, (Int, Long), (Int, Long))])]
+val taxisVisitedAllAreas = rddForEachArea.foldLeft(first)( (b,a) => 
         b.join(a)
-        .map( z => (z._1, (z._2._1 ++ z._2._2).toSet.toList))
-        // .reduceByKey(_++_.toSet.toList)
+        .map{
+            case (taxiId, (l1, l2)) => 
+                (
+                    taxiId,
+                    (l2 ++ l2).toSet.toList
+                )
+        }
     )
 
 
-
-
-
-// TODO: take (taxi_id, [list of unique_keys]) and get all those rides and sort by timestamps
+// sort the list by dropoff time and drop the trip uniquekeys
+// RDD[(String, List[(String, (Int, Long), (Int, Long))])] ->
+// RDD[(String, List[(        (Int, Long), (Int, Long))])]
+val taxiRoute = taxisVisitedAllAreas.map{
+        case (taxiId, listTripInfo) => 
+            (
+                taxiId,
+                listTripInfo.map{
+                    case (uniqueKey, (pickupArea, pickupTime), (dropoffArea, dropoffTime)) =>
+                        ((pickupArea, pickupTime), (dropoffArea, dropoffTime))
+                }.sortBy{
+                    case ((pickupArea, pickupTime), (dropoffArea,dropoffTime)) => pickupTime
+                }
+            )
+    }
 
 // TODO: given a list of unique_keys -> List( (startArea,time), (stopArea,time), .... )
 
