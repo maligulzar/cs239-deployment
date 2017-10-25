@@ -42,7 +42,7 @@ docker attach <Container-ID>
 ### Step 6:
 We have a running version of our docker container and now we'll push this container to our Google Cloud Contianer Registry. 
 ```bash
-gcloud docker -- push gcr.io/deployment-test-183218/bigdebug
+gcloud docker -- push gcr.io/<project-name>/bigdebug
 ```
 
 ### Step 7:
@@ -50,6 +50,11 @@ Set up a Google Cloud Cluster with this command. (You also need to set the clust
 ```bash
 gcloud container clusters create bigdebug-cluster
 ```
+Note:If you see an error saying that resouce could not be found. It is probably becuase of the unset project config. Use the following command to set the project config property. 
+```bash
+gcloud config set project <Project-Name>
+```
+
 This may take several minutes as well. After it is finished, get the configurations to set the kubernetes conf file.
 
 ```bash
