@@ -42,7 +42,7 @@ docker attach <Container-ID>
 ### Step 6:
 We have a running version of our docker container and now we'll push this container to our Google Cloud Contianer Registry. 
 ```bash
-gcloud docker -- push gcr.io/deployment-test-183218/bigdebug
+gcloud docker -- push gcr.io/<project-name>/bigdebug
 ```
 
 ### Step 7:
