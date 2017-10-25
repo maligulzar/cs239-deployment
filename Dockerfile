@@ -20,6 +20,7 @@ ADD id_rsa.pub /root/.ssh/id_rsa.pub
 
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
+
 # Add bitbuckets key
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
@@ -32,3 +33,10 @@ RUN cd /spark-lineage && \
 	echo Installing Spark Now && \
 	sbt/sbt assembly && \
 	echo Spark Installed
+
+
+ADD start-common.sh start-worker start-master /
+ADD spark-defaults.conf /spark-lineage/conf/spark-defaults.conf
+RUN chmod ugo+x /start-common.sh
+RUN chmod ugo+x /start-master
+RUN chmod ugo+x /start-worker
