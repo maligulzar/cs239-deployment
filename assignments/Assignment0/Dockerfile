@@ -15,6 +15,7 @@ RUN mkdir /root/.ssh/
 
 # Copy over private key, and set permissions
 ADD id_rsa /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
 
 ADD id_rsa.pub /root/.ssh/id_rsa.pub
 
