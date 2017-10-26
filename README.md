@@ -1,22 +1,29 @@
-### Overall Structure of Assignments 
-Each students will submit 4 assignments over the course of a quarter. They may optionally participate a single lab study which is 1 hour long and consists of two different tasks. 
+# Overall Structure of CS 239 Assignments  
+Each students will submit 5 assignments and will participate a single lab study, which is 1 hour long. 
 
-# Tutorial at Week 1
-In class, we will teach the basics of Apache Spark applications, the use of RDD, data flow operators, etc.  
-In addition, we will have a tutorial on BigDebug and BigSift in class. 
+## Assignment 0 (Week 1) 
+### Google Cloud Environment Set Up 
+The goal of this assignment is to set up a Google Cloud environment setting required for doing subsequent assignments. Your goal is to create a Google Cloud account, install Google Cloud SDK, Docker, and Kubernetes. 
 
-## Assignment 1 at Week 2
-This is a warm up, short assignment consisting of two tasks. A student will write a sequent count program and weather analysis using RDD operations in scala. 
+## Assignment 1 (Week 2)
+### Warm Up Apache Spark Programming Tasks  
+This is a warm up, short assignment consisting of two programming tasks on Apache Spark applications. A student will write a 'sequence count' program and 'weather analysis' using RDD operations in scala. 
 
-## Assignment 2 at Week 4: Developing more complex analytics applications with the option to use BigDebug/BigSift
+## Assignment 2 (Week 3) 
+### Big Data Analytics using Stack Overflow 
+Developing more complex analytics applications with the option to use BigDebug/BigSift
 This assignment will use the "StackOverflow" data set and will be constructed in collaboration with Daniel Lau. There will be 3 parts questions. 
 
-## Lab Study at Week 6: Within Subjects Styles: BigDebug/BigSift 
-A student will participate in a 1 hour lab study with Gulzar. Two different tasks will be given to each students. We will need 4 different tasks, so that the tasks will be counter balanced for students. 
+## Lab Study (Week 4)
+### Each student will participate a lab study, withhin subject style experiment. 
+A student will participate in a 1 hour lab study with a TA. Two different tasks will be given to each student. The choice of programming tasks will be counterbalanced to control for learning effect. 
 
-## Assignment 3 at Week 8: Debugging and Fixing a Program with the option to use BigDebug/BigSift
-This assignment will use the "Chicago Taxi" data set and will be constructed with collaboration with Daniel Lau. There will be 3 parts questions. 
+## Assignment 3 (Week 6)
+### Debugging Big Data Analytics on Chicago Taxi data 
+This assignment will use the "Chicago Taxi" data set and will be based on a set of applications developed in collaboration with Daniel Lau. The programming task will be 3 analytics tasks. 
 
-## Assignment 4 at Week 10: Debugging and Fixing a Program with the option to use BigDebug/BigSift
-This assignment will use both the "EPA" data set and "Library Dependencies" and will be constructued with collaboration with Mushi Zhou. There will be 6 parts questions. 
+## Assignment 4 (Week 8) 
+### Repairing Big Data Analytics on 'EPA' data 'Library Dependencies' data. 
+This assignment will use both the "EPA" data set and "Library Dependencies" and will be based on a set of applications developed with collaboration with Mushi Zhou. There will be 6 analytics tasks. 
+
 
