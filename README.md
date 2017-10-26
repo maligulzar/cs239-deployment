@@ -4,7 +4,7 @@
 Create a Google cloud account [here](https://cloud.google.com/)
 
 ### Step 2:
-Download Google Cloud SDK [here](https://cloud.google.com/sdk/). Follow the installation [instruction](https://cloud.google.com/sdk/docs/) to install the SDK. Make sure you have all the path variables/ environment variables set up in your terminals. (Use ~/.bash_rc or ~/.bash_profile). During the installation process, you will also be  asked to authorize your Google Cloud account. 
+Download Google Cloud SDK [here](https://cloud.google.com/sdk/). Follow the installation [instruction](https://cloud.google.com/sdk/docs/) to install the SDK. Make sure you have all the path variables/ environment variables set up in your terminals. (Use ~/.bash_rc or ~/.bash_profile). For example, you must update your PATH so that 'gcloud' command can be found. During the installation process, you will also be asked to authorize your Google Cloud account. 
 
 ### Step 3:
 Now install Docker in you local machine (Follow instructions [here](https://docs.docker.com/engine/installation/)). 
