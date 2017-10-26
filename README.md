@@ -14,7 +14,7 @@ Create a project in your Google Cloud account from your [Google Cloud Console](h
 
 
 ### Step 5:
-Now that you have installed Docker and created a Project, move in to the root directory of CS239 repository (where the "DockerFile" is located ) and run the following commond.
+Now that you have installed Docker and created a Project, move in to the root directory of CS239 repository (where the "DockerFile" is located ) and run the following commond. After the installation and once you launch 'Docker' application, you will have a docker (whale icon) running. If this step is successful, you should be able to type a 'docker' command on your command line console. 'bigdebug:v1' is the name that you give as a container of your docker image. This container will be then registered, in the later step, under the google cloud registry 'gcr.io'.  Your-project-name should be a project id, listed on your Google Cloud web page, such as 'assignment0-184120'.
 ```bash
 docker build -t gcr.io/<Your-Project-Name>/bigdebug:v1 .
 ```
