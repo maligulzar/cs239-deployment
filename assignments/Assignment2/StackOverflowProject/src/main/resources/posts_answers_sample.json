@@ -1,0 +1,8 @@
+{"owner_user_id":"11","score":"100","parent_id":"1"}
+{"owner_user_id":"11","score":"20","parent_id":"2"}
+{"owner_user_id":"12","score":"20","parent_id":"3"}
+{"owner_user_id":"12","score":"10","parent_id":"1"}
+{"owner_user_id":"12","score":"60","parent_id":"2"}
+{"owner_user_id":"13","score":"5","parent_id":"3"}
+{"owner_user_id":"13","score":"90","parent_id":"4"}
+{"owner_user_id":"14","score":"0","parent_id":"1"}
